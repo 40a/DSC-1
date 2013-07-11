@@ -156,19 +156,19 @@ Function Test-TargetResource
     $Valid = $True
 If ($Ensure -match "Present")   {
         If (!(Get-NetLBFOTeam -Name $Name -ErrorAction SilentlyContinue)) {
-        Write-Host "Team $Name does not exists"
+        Write-Verbose "Team $Name does not exists"
         $Valid = $Valid -and $false
         }
         If (!(Get-NetLbfoTeam -Name $Name | Where-Object {$_.LoadBalancingAlgorithm -match $LBMode})) {
-        Write-Host "Load Balancing Algorithm does not match $LBMode"
+        Write-Verbose "Load Balancing Algorithm does not match $LBMode"
         $Valid = $Valid -and $false
         }
         If (!(Get-NetLbfoTeam -Name $Name | Where-Object {$_.TeamingMode -match $Mode})) {
-        Write-Host "Teaming mode does not match $Mode"
+        Write-Verbose "Teaming mode does not match $Mode"
         $Valid = $Valid -and $false
         }
         If (!($VlanID) -and ((Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamNic).VlanID)) {
-        Write-Host "There are VLANs used where no VLANs should be configured"
+        Write-Verbose "There are VLANs used where no VLANs should be configured"
         $Valid = $Valid -and $false
         }
         ElseIf (($VlanID)){
@@ -177,7 +177,7 @@ If ($Ensure -match "Present")   {
         Foreach ($VLAN in $VLANs){
             If ($VLAN.SideIndicator -match "<="){
             $Valid = $Valid -and $false
-            Write-Host "VLAN"$VLAN.InputObject"shouldn't exist"
+            Write-Verbose "VLAN"$VLAN.InputObject"shouldn't exist"
             }
             }
             }
@@ -186,11 +186,11 @@ If ($Ensure -match "Present")   {
         Foreach ($NetAdapter in $NetAdapters){
             If ($NetAdapter.SideIndicator -match "=="){}
             ElseIf ($NetAdapter.SideIndicator -match "<="){
-            Write-Host "NIC"$NetAdapter.InputObject"should not be in this team"
+            Write-Verbose "NIC"$NetAdapter.InputObject"should not be in this team"
             $Valid = $Valid -and $false
             }
             ElseIf ($NetAdapter.SideIndicator -match "=>"){
-            Write-Host "NIC"$NetAdapter.InputObject"should be in this team"
+            Write-Verbose "NIC"$NetAdapter.InputObject"should be in this team"
             $Valid = $Valid -and $false
             }
             }
