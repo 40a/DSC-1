@@ -62,10 +62,10 @@ Function Set-TargetResource
     [Parameter(Mandatory)]
     [string]$Name,
 
-    [ValidateSet("Switch Independent", "LACP", "Static Teaming")]
-    [string]$Mode = "Switch Independent",
+    [ValidateSet("SwitchIndependent", "LACP", "Static")]
+    [string]$Mode = "SwitchIndependent",
 
-    [ValidateSet("Dynamic", "Hyper-V Port", "IP Addresses", "Mac Addresses", "Transport Ports")]
+    [ValidateSet("Dynamic", "HyperVPort", "IPAddresses", "MacAddresses", "TransportPorts")]
     [string]$LBMode = "Dynamic",
 
     [array]$VlanID,
@@ -140,10 +140,10 @@ Function Test-TargetResource
     [ValidateNotNullOrEmpty()]
     [string]$Name,
 
-    [ValidateSet("Switch Independent", "LACP", "Static Teaming")]
-    [string]$Mode = "Switch Independent",
+    [ValidateSet("SwitchIndependent", "LACP", "Static")]
+    [string]$Mode = "SwitchIndependent",
 
-    [ValidateSet("Dynamic", "Hyper-V Port", "IP Addresses", "Mac Addresses", "Transport Ports")]
+    [ValidateSet("Dynamic", "HyperVPort", "IPAddresses", "MacAddresses", "TransportPorts")]
     [string]$LBMode = "Dynamic",
 
     [array]$VlanID,
