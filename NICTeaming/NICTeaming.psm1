@@ -176,11 +176,11 @@ If ($Ensure -match "Present")   {
         Foreach ($VLAN in $VLANs){
             If ($VLAN.SideIndicator -match "<="){
             $Valid = $Valid -and $false
-            Write-Verbose "VLAN $VLAN.InputObject shouldn't exist"
+            Write-Verbose "VLAN $($VLAN.InputObject) shouldn't exist"
             }
             ElseIf ($VLAN.SideIndicator -match "=>"){
             $Valid = $Valid -and $false
-            Write-Verbose "VLAN $VLAN.InputObject should exist"
+            Write-Verbose "VLAN $($VLAN.InputObject) should exist"
             }
             }
             }
@@ -189,11 +189,11 @@ If ($Ensure -match "Present")   {
         Foreach ($NetAdapter in $NetAdapters){
             If ($NetAdapter.SideIndicator -match "=="){}
             ElseIf ($NetAdapter.SideIndicator -match "<="){
-            Write-Verbose "NIC $NetAdapter.InputObject should not be in this team"
+            Write-Verbose "NIC $($NetAdapter.InputObject) should not be in this team"
             $Valid = $Valid -and $false
             }
             ElseIf ($NetAdapter.SideIndicator -match "=>"){
-            Write-Verbose "NIC $NetAdapter.InputObject should be in this team"
+            Write-Verbose "NIC $($NetAdapter.InputObject) should be in this team"
             $Valid = $Valid -and $false
             }
             }
