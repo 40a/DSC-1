@@ -114,15 +114,14 @@ If ($Ensure -match "Present")   {
                 }
         $UsedNetAdapters = (Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamMember).Name
         $NetAdapters = Compare-Object $UsedNetAdapters $NICs -IncludeEqual
-            Foreach ($NetAdapter in $NetAdapters)   {
-                If ($NetAdapter.SideIndicator -match "=="){}
-                ElseIf ($NetAdapter.SideIndicator -match "=>"){Add-NetLbfoTeamMember $NetAdapter.InputObject -Team $Name -Confirm:$False}
-                ElseIf ($NetAdapter.SideIndicator -match "<="){Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamMember | Where-Object {$_.Name -Match $NetAdapter.InputObject} | Remove-NetLbfoTeamMember -Confirm:$False}
-                                                    }
+        $AdditionalNICs = ($NetAdapters | Where-Object {$_.SideIndicator -match "=>"}).InputObject
+        $NicsToBeRemoved = ($NetAdapters | Where-Object {$_.SideIndicator -match "<="}).InputObject
+            If (($AdditionalNICs)){Add-NetLbfoTeamMember -Team $Name -Name  $AdditionalNICs -Confirm:$False}
+            If (($NicsToBeRemoved)){Remove-NetLbfoTeamMember -Team $Name -Name $NicsToBeRemoved -Confirm:$False}
         $UsedMode = (Get-NetLbfoTeam -Name $Name).TeamingMode
         $UsedLBMode = (Get-NetLbfoTeam -Name $Name).LoadBalancingAlgorithm
-        If ((Compare-Object $Mode $UsedMode) -notmatch "=="){Set-NetLbfoTeam -Name $Name -TeamingMode $Mode}
-        If ((Compare-Object $LBMode $UsedLBMode) -notmatch "=="){Set-NetLbfoTeam -Name $Name -LoadBalancingAlgorithm $LBMode}
+            If ((Compare-Object $Mode $UsedMode) -notmatch "=="){Set-NetLbfoTeam -Name $Name -TeamingMode $Mode}
+            If ((Compare-Object $LBMode $UsedLBMode) -notmatch "=="){Set-NetLbfoTeam -Name $Name -LoadBalancingAlgorithm $LBMode}
                                 }
 If ($Ensure -match "Absent")	{
         If (!(Get-NetLbfoTeam -Name $Name)){}
