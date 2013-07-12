@@ -178,6 +178,10 @@ If ($Ensure -match "Present")   {
             $Valid = $Valid -and $false
             Write-Verbose "VLAN $VLAN.InputObject shouldn't exist"
             }
+            ElseIf ($VLAN.SideIndicator -match "=>"){
+            $Valid = $Valid -and $false
+            Write-Verbose "VLAN $VLAN.InputObject should exist"
+            }
             }
             }
         $UsedNetAdapters = (Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamMember).Name
