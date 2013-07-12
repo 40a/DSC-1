@@ -14,10 +14,10 @@ Function Get-TargetReSource
     [ValidateSet("Dynamic", "Hyper-V Port", "IP Addresses", "Mac Addresses", "Transport Ports")]
     [string]$LBMode = "Dynamic",
 
-    [string]$VlanID,
+    [array]$VlanID,
 
     [Parameter(Mandatory)]
-    [string]$NICs
+    [array]$NICs
     )
     
     $getTargetResourceResult = $null;
@@ -68,10 +68,10 @@ Function Set-TargetResource
     [ValidateSet("Dynamic", "Hyper-V Port", "IP Addresses", "Mac Addresses", "Transport Ports")]
     [string]$LBMode = "Dynamic",
 
-    [string]$VlanID,
+    [array]$VlanID,
 
     [Parameter(Mandatory)]
-    [string]$NICs
+    [array]$NICs
     )
     #########################################Logic##############################################
 
@@ -99,7 +99,7 @@ If ($Ensure -match "Present")   {
                                         }
                             }
         Else    {
-        $VLANs = Compare-Object $UsedVLANs $VlanID -IncludeEqual -ErrorAction SilentlyContinu
+        $VLANs = Compare-Object $UsedVLANs $VlanID -IncludeEqual -ErrorAction SilentlyContinue
             Foreach ($VLAN in $VLANs)   {
                 If ($VLAN.SideIndicator -match "<="){
                 Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamNic | Where-Object {$_.VlanID -match $VLAN.InputObject} | Remove-NetLbfoTeamNic -Confirm:$False
@@ -147,10 +147,10 @@ Function Test-TargetResource
     [ValidateSet("Dynamic", "Hyper-V Port", "IP Addresses", "Mac Addresses", "Transport Ports")]
     [string]$LBMode = "Dynamic",
 
-    [string]$VlanID,
+    [array]$VlanID,
 
     [Parameter(Mandatory)]
-    [string]$NICs
+    [array]$NICs
     )
     
     $Valid = $True
