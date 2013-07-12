@@ -116,8 +116,8 @@ If ($Ensure -match "Present")   {
         $NetAdapters = Compare-Object $UsedNetAdapters $NICs -IncludeEqual
             Foreach ($NetAdapter in $NetAdapters)   {
                 If ($NetAdapter.SideIndicator -match "=="){}
-                ElseIf ($NetAdapter.SideIndicator -match "<="){Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamMember | Where-Object {$_.Name -Match $NetAdapter.InputObject} | Remove-NetLbfoTeamMember -Confirm:$False}
                 ElseIf ($NetAdapter.SideIndicator -match "=>"){Add-NetLbfoTeamMember $NetAdapter.InputObject -Team $Name -Confirm:$False}
+                ElseIf ($NetAdapter.SideIndicator -match "<="){Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamMember | Where-Object {$_.Name -Match $NetAdapter.InputObject} | Remove-NetLbfoTeamMember -Confirm:$False}
                                                     }
         $UsedMode = (Get-NetLbfoTeam -Name $Name).TeamingMode
         $UsedLBMode = (Get-NetLbfoTeam -Name $Name).LoadBalancingAlgorithm
