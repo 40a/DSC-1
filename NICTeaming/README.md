@@ -21,7 +21,7 @@ This will turn the UTF-8 encode file into ASCII, which will fix parsing issues w
             {
               Ensure = "Present"
               Name = "Test"
-              NICs = { "Ethernet", "Ethernet 2" }
+              NICs = "Ethernet", "Ethernet 2" 
             }
           }
         }
