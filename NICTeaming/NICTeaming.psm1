@@ -172,6 +172,7 @@ If ($Ensure -match "Present")   {
         }
         ElseIf (($VlanID)){
         $UsedVLANs = (Get-NetLbfoTeam -Name $Name | Get-NetLbfoTeamNic | Where-Object {$_.Primary -notmatch "True"}).VlanID
+        If (($UsedVLANs)){
         $VLANs = Compare-Object $UsedVLANs $VlanID -IncludeEqual -ErrorAction SilentlyContinue
         Foreach ($VLAN in $VLANs){
             If ($VLAN.SideIndicator -match "<="){
@@ -181,6 +182,13 @@ If ($Ensure -match "Present")   {
             ElseIf ($VLAN.SideIndicator -match "=>"){
             $Valid = $Valid -and $false
             Write-Verbose "VLAN $($VLAN.InputObject) should exist"
+            }
+            }
+            }
+        ElseIf (!($UsedVLANs)){
+        $Valid = $Valid -and $false
+            Foreach ($VLAN in $VlanID){
+            Write-Verbose "VLAN $VLAN should exist, but doesn't"
             }
             }
             }
