@@ -136,28 +136,29 @@ Function Test-TargetResource
     (
     [ValidateSet("Present", "Absent")]
     [string]$Ensure = "Present",
-
+ 
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-
+ 
     [ValidateSet("SwitchIndependent", "LACP", "Static")]
     [string]$Mode = "SwitchIndependent",
-
+ 
     [ValidateSet("Dynamic", "HyperVPort", "IPAddresses", "MacAddresses", "TransportPorts")]
     [string]$LBMode = "Dynamic",
-
+ 
     [array]$VlanID,
-
+ 
     [Parameter(Mandatory)]
     [array]$NICs
     )
-    
+   
     $Valid = $True
-If ($Ensure -match "Present")   {
+If ($Ensure -match "Present") {
     If (!(Get-NetLBFOTeam -Name $Name -ErrorAction SilentlyContinue)) {
         Write-Verbose "Team $Name does not exists"
         $Valid = $Valid -and $false
         }
+    ElseIf ((Get-NetLBFOTeam -Name $Name -ErrorAction SilentlyContinue)) {
         If (!(Get-NetLbfoTeam -Name $Name | Where-Object {$_.LoadBalancingAlgorithm -match $LBMode})) {
         Write-Verbose "Load Balancing Algorithm does not match $LBMode"
         $Valid = $Valid -and $false
@@ -206,5 +207,12 @@ If ($Ensure -match "Present")   {
             }
             }
 }
+}
+ElseIf  ($Ensure -match "Absent") {
+        If ((Get-NetLBFOTeam -Name $Name -ErrorAction SilentlyContinue)) {
+        Write-Verbose "There is a team where there should not be"
+        $Valid = $Valid -and $false
+        }
+} 
     return $valid
 }
