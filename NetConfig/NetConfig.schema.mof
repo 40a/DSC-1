@@ -2,6 +2,7 @@
 class NetConfig : MSFT_BaseResourceConfiguration
 {
 	[write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
+	[key] string Adapter;
 	[write] string IPAddress[];
 	[write] string DNSServers[];
 	[write] string Gateway;
