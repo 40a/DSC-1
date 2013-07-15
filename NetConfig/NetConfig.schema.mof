@@ -6,7 +6,7 @@ class NetConfig : MSFT_BaseResourceConfiguration
 	[write] string IPAddress[];
 	[write] string DNSServers[];
 	[write] string Gateway;
-	[write,ValueMap{"Static", "DHCP"},Values{"Static", "DHCP"}] string Type;
+	[write,ValueMap{"Manual", "DHCP"},Values{"Manual", "DHCP"}] string Type;
 	[write] boolean RegisterDNS;
         [write] string PipelineVariable;
         [write] boolean WhatIf;
